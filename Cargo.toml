@@ -1,0 +1,34 @@
+[package]
+name = "duckdb-reghive"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+license = "MIT"
+description = "DuckDB loadable extension: Windows Registry hive (REGF) base-block inspection — well-formedness triage, hive summary, and transaction-log replay status (reghive-core only; no Notatin / no vendored deps)"
+
+[lib]
+name = "reghive"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+libduckdb-sys = "1.10504"
+quack-rs = "0.18"
+reghive-core = { path = "reghive_core" }
+
+[dev-dependencies]
+quack-rs = { version = "=0.18.0", features = ["bundled-test"] }
+duckdb = { version = "=1.10506.0", features = ["bundled"] }
+
+[profile.release]
+# panic = "unwind" lets a bug in this extension panic *inside* a vector
+# callback without aborting the host process (a cdylib loaded into a running
+# DuckDB); the default "abort" would take the whole engine down with it.
+panic = "unwind"
+lto = "fat"
+opt-level = 3
+codegen-units = 1
+
+[[bin]]
+name = "append_metadata"
+path = "src-bin/append_metadata/main.rs"

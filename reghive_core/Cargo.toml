@@ -1,0 +1,15 @@
+[package]
+name = "reghive-core"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+license = "MIT"
+description = "Windows Registry hive (REGF) base-block parse, XOR-32 checksum, transaction-log replay summary + hive generator (verbatim from Query-farm vgi-reghive, no Notatin / no I/O deps)"
+
+[dependencies]
+chrono = { version = "0.4", default-features = false, features = ["std"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[lints.rust]
+unsafe_code = "forbid"
